@@ -73,7 +73,7 @@ o: The Sonu Nigam Live Event: (17:00-18:00) 1
 
 
 Guidelines:
-Time: 90mins
+
 Write modular and clean code.
 A driver program/main class/test case is needed to test out the code by the evaluator with multiple test cases. But do not spend too much time in the input parsing. Keep it as simple as possible.
 Evaluation criteria:  Demoable & functionally correct code, Code readability, Proper Entity modeling, Modularity & Extensibility, Separation of concerns, Abstractions. Use design patterns wherever applicable

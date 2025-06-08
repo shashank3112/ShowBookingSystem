@@ -5,8 +5,8 @@ import model.*;
 import java.util.*;
 public class BookingManager {
 
-    public static Map<String, User> users = new HashMap<>();
-    public static Map<String, Booking> bookingMap = new HashMap<>();
+    public static Map<String, User> users = new HashMap<>();//username -> User obj
+    public static Map<String, Booking> bookingMap = new HashMap<>();// booking id -> Booking obj
 
     public static void book(String userName, String showName, String time, int persons) {
         book(userName, showName, time, persons, false);
@@ -23,22 +23,23 @@ public class BookingManager {
             System.out.println("User has another booking in this time slot");
             return;
         }
-        Show show = ShowManager.shows.get(showName);
+        Show show = ShowManager.shows.get(showName);  // fetching show object which will also tell us slots of that show
         if (show == null || !show.slots.containsKey(time)) {
             System.out.println("Invalid show or time");
             return;
         }
         Slot slot = show.slots.get(time);
         if (slot.isAvailable(persons)) {
-            Booking booking = new Booking(userName, showName, time, persons);
-            slot.booked += persons;
-            slot.bookings.add(booking);
-            user.addBooking(booking);
-            bookingMap.put(booking.id, booking);
+            Booking booking = new Booking(userName, showName, time, persons); //create new booking
+            slot.booked += persons; // persons number of seats is occupied so add it
+            slot.bookings.add(booking); // adding the booking in that particular slot's bookings array list
+            user.addBooking(booking); // adding the booking into users profile
+            bookingMap.put(booking.id, booking); // keeping the booking for booking manager
 
-            if (!isWaitlistFulfillment)
+            if (!isWaitlistFulfillment) { // i.e if the booking is fresh and was not in waiting list
                 System.out.println("Booked. Booking id: " + booking.id);
-        } else {
+            }
+        } else { // if ths slot is not available for any new booking  just add to waitlist
             if (!isWaitlistFulfillment) {
                 slot.addToWaitlist(new WaitlistEntry(userName, showName, time, persons));
                 System.out.println("Added to waitlist");
@@ -52,20 +53,21 @@ public class BookingManager {
             System.out.println("Invalid booking ID");
             return;
         }
-        Show show = ShowManager.shows.get(booking.showName);
-        Slot slot = show.slots.get(booking.time);
-        User user = users.get(booking.userName);
+        Show show = ShowManager.shows.get(booking.showName); // fetching show obj i.e show details from shows map
+        Slot slot = show.slots.get(booking.time); //fetching slot obj against the booking time
+        User user = users.get(booking.userName);  // fetching user obj against the username
 
-        slot.booked -= booking.persons;
-        slot.bookings.remove(booking);
-        user.cancelBooking(booking);
-        bookingMap.remove(bookingId);
+        slot.booked -= booking.persons;  // decrease booked seats for that slot
+        slot.bookings.remove(booking); // remove the booking obj from slot's bookings list
+        user.cancelBooking(booking);  // removing the booking from user's profile
+        bookingMap.remove(bookingId); // removing booking from booking Map present in Booking manager class
         System.out.println("Booking Canceled");
-        slot.processWaitlist();
+        slot.processWaitlist();  // since the booking has been canceled , we can try allowing seats to people in waiting list
     }
 
-    static void viewBookings(String userName) {
+    public static void viewBookings(String userName) {
         User user = users.get(userName);
+        System.out.println("booking of "+userName);
         if (user == null) {
             System.out.println("No such user");
             return;

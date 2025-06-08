@@ -2,8 +2,8 @@ package model;
 import java.util.*;
 public class User {
     String name;
-    Map<String, Booking> bookings = new HashMap<>(); // bookingId -> Booking
-    Set<String> occupiedSlots = new HashSet<>();
+    Map<String, Booking> bookings = new HashMap<>(); // maps bookingId -> Booking
+    Set<String> occupiedSlots = new HashSet<>(); // contains only unique timing
 
     public User(String name) {
         this.name = name;

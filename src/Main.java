@@ -25,7 +25,9 @@ public class Main {
 
         BookingManager.book("shashank", "Rishav captcha", "13:00-14:00", 2);
         ShowManager.showAvailByGenre("comedy");
-        test1();
+
+        BookingManager.viewBookings("shashank");
+       // test1();
 
     }
     public static void test1(){
